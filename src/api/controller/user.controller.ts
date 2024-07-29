@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import env_variables from "../../config/custom-env-variable";
-import { UserApiResponse } from "../../Types/types";
 import { validationResult } from "express-validator";
+import env_variables from "../../config/custom-env-variable";
+import { UserApiResponse } from "../../Types/user.type";
 import { addUser } from "../../query/create.query";
 import { checkUser } from "../../query/read.query";
 import { CustomRequest } from "../../middleware/isAuthenticated.middleware";

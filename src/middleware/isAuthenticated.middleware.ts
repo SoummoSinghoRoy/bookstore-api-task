@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 import { jwtDecode } from 'jwt-decode';
-import { AuthenticationResponse } from '../Types/types';
+import { AuthenticationResponse } from '../Types/user.type';
 
 interface CustomRequest extends Request {
   user: {

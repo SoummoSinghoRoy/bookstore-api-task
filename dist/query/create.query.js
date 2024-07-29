@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addUser = void 0;
+exports.createAuthor = exports.addUser = void 0;
 const knex_1 = __importDefault(require("../knex/knex"));
 const read_query_1 = require("./read.query");
 const addUser = (userdata) => __awaiter(void 0, void 0, void 0, function* () {
@@ -26,4 +26,15 @@ const addUser = (userdata) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.addUser = addUser;
+const createAuthor = (authorData) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const newAuthorId = yield (0, knex_1.default)('authors').insert({ name: authorData.name, bio: authorData.bio, birthdate: authorData.birthdate });
+        const author = yield (0, read_query_1.checkAuthor)(newAuthorId[0]);
+        return author;
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+exports.createAuthor = createAuthor;
 //# sourceMappingURL=create.query.js.map

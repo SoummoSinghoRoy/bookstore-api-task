@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userLogoutPostController = exports.userLoginPostController = exports.userSignupPostController = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const custom_env_variable_1 = __importDefault(require("../../config/custom-env-variable"));
 const express_validator_1 = require("express-validator");
+const custom_env_variable_1 = __importDefault(require("../../config/custom-env-variable"));
 const create_query_1 = require("../../query/create.query");
 const read_query_1 = require("../../query/read.query");
 const userSignupPostController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

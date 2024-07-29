@@ -1,6 +1,7 @@
 import db from "../knex/knex";
-import { UserInputData } from "../Types/types";
-import { fetchCreatedUser } from './read.query';
+import { AuthorInputData } from "../Types/author.type";
+import { UserInputData } from "../Types/user.type";
+import { checkAuthor, fetchCreatedUser } from './read.query';
 
 const addUser = async (userdata: UserInputData) => {
   try {
@@ -12,4 +13,17 @@ const addUser = async (userdata: UserInputData) => {
   }
 }
 
-export{ addUser };
+const createAuthor = async (authorData: AuthorInputData) => {
+  try {
+    const newAuthorId = await db('authors').insert({name: authorData.name, bio: authorData.bio, birthdate: authorData.birthdate});
+    const author = await checkAuthor(newAuthorId[0]);
+    return author;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export{ 
+  addUser,
+  createAuthor 
+};

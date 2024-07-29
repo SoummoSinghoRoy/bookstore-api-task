@@ -4,7 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_route_1 = __importDefault(require("./user.route"));
+const author_route_1 = __importDefault(require("./author.route"));
 const routes = [
+    {
+        path: '/api/authors',
+        handler: author_route_1.default
+    },
     {
         path: '/api/user',
         handler: user_route_1.default

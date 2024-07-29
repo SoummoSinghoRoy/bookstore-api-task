@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkUser = exports.fetchCreatedUser = void 0;
+exports.checkAuthor = exports.checkUser = exports.fetchCreatedUser = void 0;
 const knex_1 = __importDefault(require("../knex/knex"));
 const fetchCreatedUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -34,4 +34,15 @@ const checkUser = (email) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.checkUser = checkUser;
+const checkAuthor = (authorInfo) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const column = typeof authorInfo === 'string' ? 'name' : 'id';
+        const author = yield knex_1.default.where(column, authorInfo).select('*').from('authors').first();
+        return author;
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+exports.checkAuthor = checkAuthor;
 //# sourceMappingURL=read.query.js.map
