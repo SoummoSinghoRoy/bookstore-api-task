@@ -1,13 +1,17 @@
 import { Router } from 'express';
 const router = Router();
-import authorValidator from '../validation/author/author.validation';
+import createAuthorValidator from '../validation/author/createauthor.validation';
+import EditAuthorValidator from '../validation/author/editauthor.validation';
 import { isAuthenticated } from '../../middleware/isAuthenticated.middleware';
-import { allAuthorGetController, authorCreatePostController, authorDeleteController, authorEditPutController, singleAuthorGetController } from '../controller/author.controller';
+import { allAuthorGetController, allBooksOfAnAuthorController, authorCreatePostController, authorDeleteController, authorEditPutController, singleAuthorGetController } from '../controller/author.controller';
+import { searcAuthorsController } from '../controller/search.controller';
 
-router.post('/', isAuthenticated, authorValidator, authorCreatePostController);
+router.post('/', isAuthenticated, createAuthorValidator, authorCreatePostController);
 router.get('/', isAuthenticated, allAuthorGetController);
 router.get('/:id', isAuthenticated, singleAuthorGetController);
-router.put('/:id', isAuthenticated, authorValidator, authorEditPutController);
+router.put('/:id', isAuthenticated, EditAuthorValidator, authorEditPutController);
 router.delete('/:id', isAuthenticated, authorDeleteController);
+router.get('/:id/books', isAuthenticated, allBooksOfAnAuthorController);
+router.get('/search/:searchterm', isAuthenticated, searcAuthorsController);
 
 export default router;

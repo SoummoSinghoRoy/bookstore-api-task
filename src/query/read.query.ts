@@ -113,12 +113,28 @@ const fetchAllBooksWithAuthors = async(page: number, limitData: number) => {
   }
 }
 
-// search books
-// search authors
+const getBooksOfAnAuthor = async (authorId: number) => {
+  try {
+    const booksofAuthor = await db.select('*').from('books').where('author_id', authorId);
+    return booksofAuthor;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-// const getBooksOfAnAuthor = async (authorId: number) => {}
-
-// const authorDetailsWithBooks = async (authorId: number) => {}
+const authorDetailsWithBooks = async (authorId: number) => {
+  try {
+    const author = await db.select('*').from('authors').where('id', authorId).first();
+    const books = await db.select('id', 'title', 'description', 'published_date').from('books').where('author_id', author.id);
+    const authorWithBooks = {
+      ...author,
+      books
+    };
+    return authorWithBooks;
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 
 export {
@@ -128,5 +144,7 @@ export {
   fetchAllAuthors,
   checkBook,
   checkBookWithAuthor,
-  fetchAllBooksWithAuthors
+  fetchAllBooksWithAuthors,
+  getBooksOfAnAuthor,
+  authorDetailsWithBooks
 };

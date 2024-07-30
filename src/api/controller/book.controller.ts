@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { BookApiResponse } from "../../Types/book.type";
-import { checkAuthor, checkBook, checkBookWithAuthor, fetchAllBooksWithAuthors } from "../../query/read.query";
+import { authorDetailsWithBooks, checkAuthor, checkBook, checkBookWithAuthor, fetchAllBooksWithAuthors } from "../../query/read.query";
 import { createBook } from "../../query/create.query";
 import { bookUpdate } from "../../query/update.query";
 import { deleteBook } from "../../query/delete.query";
+import { AuthorApiResponse } from "../../Types/author.type";
 
 const bookCreatePostController = async(req: Request, res: Response) => {
   let { title, published_date, author_id } = req.body;
@@ -53,17 +54,25 @@ const allBooksGetController = async (req: Request, res: Response) => {
   const limit: number = parseInt(req.query.limit as string) || 10;
   try {
     const result = await fetchAllBooksWithAuthors(page, limit);
-    const response: BookApiResponse = {
-      status: 200,
-      message: `Books fetched Successfully`,
-      data: result?.books,
-      pagination: {
-        totalCount: result?.totalCount?.count,
-        currentPage: page,
-        totalPages: result?.totalPages
+    if(result?.books.length !== 0) {
+      const response: BookApiResponse = {
+        status: 200,
+        message: `Books fetched Successfully`,
+        data: result?.books,
+        pagination: {
+          totalCount: result?.totalCount?.count,
+          currentPage: page,
+          totalPages: result?.totalPages
+        }
       }
+      res.json(response);
+    } else {
+      const response: BookApiResponse = {
+        status: 200,
+        message: `Authors is empty`
+      }
+      res.json(response);
     }
-    res.json(response);
   } catch (error) {
     console.log(error);
     const response: BookApiResponse = {
@@ -188,10 +197,50 @@ const bookdeleteController = async (req: Request, res: Response) => {
   }
 }
 
+const authorDetailsWithBooksController = async (req: Request, res: Response) => {
+  let {id} = req.params;
+  try {
+    const validAuthor = await checkAuthor(parseInt(id));
+    if(validAuthor) {
+      const authorWithBooks = await authorDetailsWithBooks(validAuthor.id);
+      if(authorWithBooks.books !== 0) {
+        const response: BookApiResponse = {
+          status: 200,
+          message: `Books fetched Successfully`,
+          data: authorWithBooks,
+        }
+        res.json(response);
+      } else {
+        const response: BookApiResponse = {
+          status: 200,
+          message: `Books is empty`
+        }
+        res.json(response);
+      }
+    } else {
+      const response: BookApiResponse = {
+        status: 404,
+        message: `Author not found`,
+      }
+      res.json(response);
+    }
+  } catch (error) {
+    console.log(error);
+    const response: AuthorApiResponse = {
+      status: 500,
+      message: 'Internal server error'
+    }
+    res.json(response);
+  }
+}
+
+
+
 export {
   bookCreatePostController,
   allBooksGetController,
   singleBookGetController,
   editBookPutController,
-  bookdeleteController
+  bookdeleteController,
+  authorDetailsWithBooksController
 }

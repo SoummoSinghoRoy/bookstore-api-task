@@ -12,9 +12,13 @@ const editBookValidator = [
   body('author_id')
   .notEmpty().withMessage(`Author is required`)
   .custom(async (author_id) => {
-    const author = await checkAuthor(parseInt(author_id));
-    if(!author) {
-      return Promise.reject(`Author not found`)
+    try {
+      const author = await checkAuthor(parseInt(author_id));
+      if(!author) {
+        return Promise.reject(`Author not found`)
+      }
+    } catch (error) {
+      console.log(error);
     } 
   })
 ]
