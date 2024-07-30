@@ -1,7 +1,8 @@
 import db from "../knex/knex";
 import { AuthorInputData } from "../Types/author.type";
+import { BookInputData } from "../Types/book.type";
 import { UserInputData } from "../Types/user.type";
-import { checkAuthor, fetchCreatedUser } from './read.query';
+import { checkAuthor, checkBookWithAuthor, fetchCreatedUser } from './read.query';
 
 const addUser = async (userdata: UserInputData) => {
   try {
@@ -23,7 +24,18 @@ const createAuthor = async (authorData: AuthorInputData) => {
   }
 }
 
+const createBook = async (bookData: BookInputData) => {
+  try {
+    const newBookId = await db('books').insert({title: bookData.title, description: bookData.description, published_date: bookData.published_date, author_id: bookData.authorId});
+    const book = await checkBookWithAuthor(newBookId[0]);
+    return book;
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export{ 
   addUser,
-  createAuthor 
+  createAuthor ,
+  createBook
 };

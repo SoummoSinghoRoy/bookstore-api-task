@@ -9,6 +9,16 @@ const deleteAuthor = async (id: number) => {
   }
 }
 
+const deleteBook = async (id: number) => {
+  try {
+    const deletedBook = await db('books').where('id', id).del();
+    return deletedBook;
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export {
-  deleteAuthor
+  deleteAuthor,
+  deleteBook
 }

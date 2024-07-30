@@ -2,7 +2,7 @@
 
 ### To use or test the API, follow the steps below.
 
-* Step-1: Make a dist directory in project root.
+* Step-1: Make a dist directory & .env file in project root.
 * Step-2: Used mysql DB and local mysql server for this project. As well as use knex query builder so follow some steps below for configure db in project.
           1. First should create mysql db/schema.
           2. Save schema/db information alongwith db port, host, user, password in .env file.

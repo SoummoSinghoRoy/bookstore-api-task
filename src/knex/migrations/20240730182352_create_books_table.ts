@@ -8,7 +8,8 @@ export async function up(knex: Knex): Promise<void> {
     table.text('description');
     table.date('published_date').notNullable();
     table.integer('author_id').unsigned().notNullable();
-    table.foreign('author_id').references('id').inTable('authors');
+    table.foreign('author_id').references('id').inTable('authors').onDelete('CASCADE');
+    table.index('title');
   })
 }
 
@@ -16,4 +17,5 @@ export async function up(knex: Knex): Promise<void> {
 export async function down(knex: Knex): Promise<void> {
   return knex.schema.dropTableIfExists('books');
 }
+
 

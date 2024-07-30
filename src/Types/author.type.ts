@@ -4,6 +4,7 @@ interface Author {
   bio: string;
   birthdate: string;
 }
+
 interface AuthorApiResponse {
   status: number;
   error?: {
@@ -25,6 +26,7 @@ interface AuthorInputData {
 }
 
 export type {
+  Author,
   AuthorApiResponse,
   AuthorInputData
 }

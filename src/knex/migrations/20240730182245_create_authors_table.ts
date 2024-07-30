@@ -7,6 +7,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('name').notNullable();
     table.text('bio');
     table.date('birthdate').notNullable();
+    table.index('name');
   })
 }
 
@@ -14,4 +15,3 @@ export async function up(knex: Knex): Promise<void> {
 export async function down(knex: Knex): Promise<void> {
   return knex.schema.dropTableIfExists('authors');
 }
-
