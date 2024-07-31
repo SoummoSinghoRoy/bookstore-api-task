@@ -9,7 +9,7 @@ import { checkUser } from "../../query/read.query";
 import { CustomRequest } from "../../middleware/isAuthenticated.middleware";
 
 
-const userSignupPostController = async(req: Request, res: Response) => {
+const userSignupPostController = async(req: Request, res: Response): Promise<void> => {
   let {email, password} = req.body
 
   const errors = validationResult(req).formatWith(err => err.msg);
@@ -47,7 +47,7 @@ const userSignupPostController = async(req: Request, res: Response) => {
   }
 }
 
-const userLoginPostController = async (req: Request, res: Response) => {
+const userLoginPostController = async (req: Request, res: Response): Promise<void> => {
   let {email, password} = req.body
 
   const errors = validationResult(req).formatWith(err => err.msg);

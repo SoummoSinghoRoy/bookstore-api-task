@@ -8,10 +8,10 @@ import { searchBooksController } from '../controller/search.controller';
 
 router.post('/', isAuthenticated, createBookValidator, bookCreatePostController);
 router.get('/', isAuthenticated, allBooksGetController);
-router.get('/:id', isAuthenticated, singleBookGetController);
+router.get('/:id', singleBookGetController);
 router.put('/:id', isAuthenticated, editBookValidator, editBookPutController);
 router.delete('/:id', isAuthenticated, bookdeleteController);
-router.get('/author/:id', isAuthenticated, authorDetailsWithBooksController);
+router.get('/author/:id', authorDetailsWithBooksController);
 router.get('/search/:searchterm', isAuthenticated, searchBooksController);
 
 export default router;

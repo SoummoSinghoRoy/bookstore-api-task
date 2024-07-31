@@ -29,7 +29,7 @@ const checkAuthor = async (authorInfo: string | number) => {
   }
 }
 
-const fetchAllAuthors = async (page: number, limitData: number) => {
+const fetchAllAuthors = async (page: number=1, limitData: number=10) => {
   try {
     const offset = (page - 1) * limitData;
     const authors = await db.select('*').from('authors').limit(limitData).offset(offset);
@@ -86,7 +86,7 @@ const fetchAllBooksWithAuthors = async(page: number, limitData: number) => {
     const offset = (page - 1) * limitData;
     const booksdata = await db('books')
                         .join('authors', 'books.author_id', '=', 'authors.id')
-                        .select('books.*', 'authors.*')
+                        .select('authors.*', 'books.*')
                         .distinct('books.id')
                         .offset(offset)
                         .limit(limitData);
@@ -136,6 +136,46 @@ const authorDetailsWithBooks = async (authorId: number) => {
   }
 }
 
+const fetchAuthorsWithBooks = async () => {
+  try {
+    const authorsWithBooks = await db('authors')
+                                  .leftJoin('books', 'authors.id', 'books.author_id')
+                                  .select(
+                                    'authors.*',
+                                    'books.id as book_id',
+                                    'books.title',
+                                    'books.description',
+                                    'books.published_date'
+                                  )
+                                  .groupBy('authors.id', 'books.id');
+
+    const result = authorsWithBooks.reduce((acc, item) => {
+      const { id, name, bio, birthdate, book_id, title, description, published_date } = item;
+  
+      if (!acc[id]) {
+          acc[id] = {
+              id,
+              name,
+              bio,
+              birthdate,
+              books: []
+          };
+      }
+  
+      if (book_id) {
+          acc[id].books.push({ book_id, title, description, published_date });
+      }
+  
+      return acc;
+  }, {});
+  
+  const finalData = Object.values(result);
+  return finalData;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 
 export {
   fetchCreatedUser,
@@ -146,5 +186,6 @@ export {
   checkBookWithAuthor,
   fetchAllBooksWithAuthors,
   getBooksOfAnAuthor,
-  authorDetailsWithBooks
+  authorDetailsWithBooks,
+  fetchAuthorsWithBooks
 };

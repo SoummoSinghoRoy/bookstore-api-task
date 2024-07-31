@@ -11,7 +11,7 @@ interface AuthorApiResponse {
     message: string | object
   };
   message?: string;
-  data?: Author | Author[],
+  data?: any,
   pagination?: {
     totalCount: any,
     currentPage: any,

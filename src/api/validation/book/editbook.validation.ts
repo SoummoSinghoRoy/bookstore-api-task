@@ -1,7 +1,7 @@
-import { body } from 'express-validator';
+import { body, ValidationChain } from 'express-validator';
 import { checkAuthor } from '../../../query/read.query';
 
-const editBookValidator = [
+const editBookValidator: ValidationChain[]  = [
   body('title')
     .notEmpty().withMessage(`Title can't be empty`)
     .trim()

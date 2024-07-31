@@ -1,6 +1,6 @@
-import { body } from 'express-validator';
+import { body, ValidationChain } from 'express-validator';
 
-const EditAuthorValidator = [
+const EditAuthorValidator: ValidationChain[]  = [
   body('name')
     .notEmpty().withMessage(`Author name can't be empty`)
     .trim()

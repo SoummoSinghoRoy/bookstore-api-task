@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { AuthorApiResponse } from "../../Types/author.type";
 import { createAuthor } from "../../query/create.query";
-import { checkAuthor, fetchAllAuthors, getBooksOfAnAuthor } from "../../query/read.query";
+import { checkAuthor, fetchAllAuthors, fetchAuthorsWithBooks, getBooksOfAnAuthor } from "../../query/read.query";
 import { authorUpdate } from "../../query/update.query";
 import { deleteAuthor } from "../../query/delete.query";
 import { BookApiResponse } from "../../Types/book.type";
 
-const authorCreatePostController = async (req: Request, res: Response) => {
+const authorCreatePostController = async (req: Request, res: Response): Promise<void> => {
   let { name, birthdate } = req.body;
   const bio = req.body.bio || null;
   const errors = validationResult(req).formatWith(err => err.msg);
@@ -46,12 +46,12 @@ const authorCreatePostController = async (req: Request, res: Response) => {
   }
 }
 
-const allAuthorGetController = async (req: Request, res: Response) => {
+const allAuthorGetController = async (req: Request, res: Response): Promise<void> => {
   const page: number = parseInt(req.query.page as string) || 1;
   const limit: number = parseInt(req.query.limit as string) || 10;
   try {
     const result = await fetchAllAuthors(page, limit);
-    if(result?.authors.length !== 0) {
+    if(result && result?.authors.length > 0) {
       const response: AuthorApiResponse = {
         status: 200,
         message: `Authors fetched Successfully`,
@@ -80,7 +80,7 @@ const allAuthorGetController = async (req: Request, res: Response) => {
   }
 }
 
-const singleAuthorGetController = async (req: Request, res: Response) => {
+const singleAuthorGetController = async (req: Request, res: Response): Promise<void> => {
   let { id } = req.params;
   try {
     const author = await checkAuthor(parseInt(id));
@@ -113,7 +113,7 @@ const singleAuthorGetController = async (req: Request, res: Response) => {
   }
 }
 
-const authorEditPutController = async (req: Request, res: Response) => {
+const authorEditPutController = async (req: Request, res: Response): Promise<void> => {
   let { name, birthdate } = req.body;
   let {id} = req.params;
   const bio = req.body.bio || null;
@@ -163,7 +163,7 @@ const authorEditPutController = async (req: Request, res: Response) => {
   }
 }
 
-const authorDeleteController = async(req: Request, res: Response) => {
+const authorDeleteController = async(req: Request, res: Response): Promise<void> => {
   let {id} = req.params;
   try {
     const validAuthor = await checkAuthor(parseInt(id));
@@ -191,7 +191,7 @@ const authorDeleteController = async(req: Request, res: Response) => {
   }
 }
 
-const allBooksOfAnAuthorController = async (req: Request, res: Response) => {
+const allBooksOfAnAuthorController = async (req: Request, res: Response): Promise<void> => {
   let {id} = req.params;
   try {
     const validAuthor = await checkAuthor(parseInt(id));
@@ -228,6 +228,34 @@ const allBooksOfAnAuthorController = async (req: Request, res: Response) => {
   }
 }
 
+const allAuthorsWithBooksGetController = async (req: Request, res: Response) => {
+  try {
+    const authors_books = await fetchAuthorsWithBooks();
+    if(authors_books?.length !== 0) {
+      const response: AuthorApiResponse = {
+        status: 200,
+        message: `Authors fecthed successfully`,
+        data: authors_books
+      }
+      res.json(response);
+    } else {
+      const response: AuthorApiResponse = {
+        status: 200,
+        message: `Authors not found`,
+        data: authors_books
+      }
+      res.json(response);
+    }
+  } catch (error) {
+    console.log(error);
+    const response: AuthorApiResponse = {
+      status: 500,
+      message: `Internal server error`
+    }
+    res.json(response);
+  }
+}
+
 
 
 export {
@@ -236,6 +264,7 @@ export {
   singleAuthorGetController,
   authorEditPutController,
   authorDeleteController,
-  allBooksOfAnAuthorController
+  allBooksOfAnAuthorController,
+  allAuthorsWithBooksGetController
 }
 

@@ -1,6 +1,6 @@
-import { body } from 'express-validator';
+import { body, ValidationChain } from 'express-validator';
 
-const loginValidator = [
+const loginValidator: ValidationChain[] = [
   body('email')
     .notEmpty().withMessage(`Email can't be empty`)
     .trim()

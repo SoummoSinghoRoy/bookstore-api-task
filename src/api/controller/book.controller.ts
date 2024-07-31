@@ -7,7 +7,7 @@ import { bookUpdate } from "../../query/update.query";
 import { deleteBook } from "../../query/delete.query";
 import { AuthorApiResponse } from "../../Types/author.type";
 
-const bookCreatePostController = async(req: Request, res: Response) => {
+const bookCreatePostController = async(req: Request, res: Response): Promise<void> => {
   let { title, published_date, author_id } = req.body;
   const description = req.body.description || null;
   const errors = validationResult(req).formatWith(err => err.msg);
@@ -49,7 +49,7 @@ const bookCreatePostController = async(req: Request, res: Response) => {
   }
 }
 
-const allBooksGetController = async (req: Request, res: Response) => {
+const allBooksGetController = async (req: Request, res: Response): Promise<void> => {
   const page: number = parseInt(req.query.page as string) || 1;
   const limit: number = parseInt(req.query.limit as string) || 10;
   try {
@@ -83,7 +83,7 @@ const allBooksGetController = async (req: Request, res: Response) => {
   }
 }
 
-const singleBookGetController = async(req: Request, res: Response) => {
+const singleBookGetController = async(req: Request, res: Response): Promise<void> => {
   let { id } = req.params;
   try {
     const book = await checkBookWithAuthor(parseInt(id));
@@ -117,7 +117,7 @@ const singleBookGetController = async(req: Request, res: Response) => {
   }
 }
 
-const editBookPutController = async(req: Request, res: Response) => {
+const editBookPutController = async(req: Request, res: Response): Promise<void> => {
   let { title, published_date, author_id } = req.body;
   let {id} = req.params;
   const description = req.body.description || null;
@@ -169,7 +169,7 @@ const editBookPutController = async(req: Request, res: Response) => {
   }
 }
 
-const bookdeleteController = async (req: Request, res: Response) => {
+const bookdeleteController = async (req: Request, res: Response): Promise<void> => {
   let {id} = req.params;
   try {
     const validBook = await checkBook(parseInt(id));
@@ -197,7 +197,7 @@ const bookdeleteController = async (req: Request, res: Response) => {
   }
 }
 
-const authorDetailsWithBooksController = async (req: Request, res: Response) => {
+const authorDetailsWithBooksController = async (req: Request, res: Response): Promise<void> => {
   let {id} = req.params;
   try {
     const validAuthor = await checkAuthor(parseInt(id));

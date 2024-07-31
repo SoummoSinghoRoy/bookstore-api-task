@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { SearchApiResponse } from "../../Types/search.type";
 import { searchAuthors, searchBooks } from "../../query/search.query";
 
-const searchBooksController = async (req: Request, res: Response) => {
+const searchBooksController = async (req: Request, res: Response): Promise<void> => {
   let {searchterm} = req.params;
   try {
     const books = await searchBooks(searchterm);
@@ -32,7 +32,7 @@ const searchBooksController = async (req: Request, res: Response) => {
   }
 }
 
-const searcAuthorsController = async (req: Request, res: Response) => {
+const searcAuthorsController = async (req: Request, res: Response): Promise<void> => {
   let {searchterm} = req.params;
   try {
     const authors = await searchAuthors(searchterm);
