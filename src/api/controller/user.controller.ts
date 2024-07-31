@@ -73,7 +73,8 @@ const userLoginPostController = async (req: Request, res: Response): Promise<voi
           const response: UserApiResponse = {
             status: 200,
             message: `Logged In successfully`,
-            token: `Bearer ${token}`
+            token: `Bearer ${token}`,
+            isAuthenticated: true
           }
           res.json(response);
         } else {

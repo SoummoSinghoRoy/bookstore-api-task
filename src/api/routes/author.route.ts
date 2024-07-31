@@ -12,7 +12,7 @@ router.get('/', isAuthenticated, allAuthorGetController);
 router.get('/:id', isAuthenticated, singleAuthorGetController);
 router.put('/:id', isAuthenticated, EditAuthorValidator, authorEditPutController);
 router.delete('/:id', isAuthenticated, authorDeleteController);
-router.get('/:id/books', isAuthenticated, allBooksOfAnAuthorController);
+router.get('/:id/books', allBooksOfAnAuthorController);
 router.get('/search/:searchterm', isAuthenticated, searcAuthorsController);
 
 
